@@ -8,6 +8,8 @@
 #include "common.h"
 #include "BluetoothDevice.h"
 #include "StickNFindDevice.h"
+#include "FitbitDevice.h"
+#include "TISensorTagDevice.h"
 
 BluetoothDevice::BluetoothDevice(
 		):_lastRssi(0),_devicePresent(false), _deviceType(BDT_Undefined), _isyVariableId(0)
@@ -32,6 +34,7 @@ bool BluetoothDevice::TickAndCheckForStateChange()
 	{
 		if(deltaFromLastUpdate.total_seconds() > this->GetTimeBeforeMissingMs().total_seconds())
 		{
+			BOOST_LOG_TRIVIAL(debug) << "Changing from present to not because no update for " << deltaFromLastUpdate.total_seconds() << endl;
 			this->_devicePresent = false;
 			return true;
 		}
@@ -40,6 +43,7 @@ bool BluetoothDevice::TickAndCheckForStateChange()
 	{
 		if(deltaFromLastUpdate.total_seconds() < this->GetTimeBeforeMissingMs().total_seconds())
 		{
+			BOOST_LOG_TRIVIAL(debug) << "Changing from not present to present as update was received" << endl;
 			this->_devicePresent = true;
 			return true;
 		}
@@ -102,12 +106,14 @@ int BluetoothDevice::GetISYVariableId()
 int BluetoothDevice::Initialize(string address, string friendlyName,
 		posix_time::time_duration updateFrequencyMs,
 		posix_time::time_duration timeBeforeMissingMs,
+		posix_time::time_duration timeBeforeSensorPollMs,
 		BluetoothDevice::DeviceType deviceType,
 		int isyVariableId)
 {
 	_deviceType = deviceType;
 	_updateFrequencyMs = updateFrequencyMs;
 	_timeBeforeMissingMs = timeBeforeMissingMs;
+	_timeBeforeSensorPollMs = timeBeforeSensorPollMs;
 	_deviceAddress = address;
 	_friendlyName = friendlyName;
 	_isyVariableId = isyVariableId;
@@ -119,13 +125,26 @@ BluetoothDevice* BluetoothDevice::CreateDevice(
 		string address, string friendlyName,
 		posix_time::time_duration updateFrequencyMs,
 		posix_time::time_duration timeBeforeMissingMs,
+		posix_time::time_duration timeBeforeSensorPollMs,
 		BluetoothDevice::DeviceType deviceType,
 		int isyVariableId)
 {
 	if(deviceType == BluetoothDevice::BDT_SticknFindTag)
 	{
 		StickNFindDevice* newDevice = new StickNFindDevice();
-		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, deviceType, isyVariableId);
+		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
+		return newDevice;
+	}
+	else if(deviceType == BluetoothDevice::BDT_FitBit)
+	{
+		FitbitDevice* newDevice = new FitbitDevice();
+		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
+		return newDevice;
+	}
+	else if(deviceType == BluetoothDevice::BDT_SensorTag)
+	{
+		TISensorTagDevice* newDevice = new TISensorTagDevice();
+		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
 		return newDevice;
 	}
 	return NULL;

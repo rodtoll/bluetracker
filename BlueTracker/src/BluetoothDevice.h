@@ -16,7 +16,8 @@ public: // Types
 		BDT_Undefined = 0,
 		BDT_IBeacon = 1,
 		BDT_SticknFindTag = 2,
-		BDT_SensorTag = 3
+		BDT_SensorTag = 3,
+		BDT_FitBit = 4
 	};
 
 public:
@@ -46,7 +47,8 @@ public:
 	static BluetoothDevice* CreateDevice(
 			string address, string friendlyName,
 			posix_time::time_duration updateFrequencyMs,
-			posix_time::time_duration timeBeforeAway,
+			posix_time::time_duration timeBeforeMissingMs,
+			posix_time::time_duration timeBeforeSensorPollMs,
 			BluetoothDevice::DeviceType deviceType,
 			int isyVariableId);
 
@@ -54,6 +56,7 @@ protected:
 	virtual int Initialize(string address, string friendlyName,
 			posix_time::time_duration updateFrequencyMs,
 			posix_time::time_duration timeBeforeMissingMs,
+			posix_time::time_duration timeBeforeSensorPollMs,
 			BluetoothDevice::DeviceType deviceType,
 			int isyVariableId);
 
@@ -62,6 +65,7 @@ protected:
 	bool _devicePresent;
 	posix_time::time_duration _updateFrequencyMs;
 	posix_time::time_duration _timeBeforeMissingMs;
+	posix_time::time_duration _timeBeforeSensorPollMs;
 	DeviceType _deviceType;
 	string _friendlyName;
 	string _deviceAddress;

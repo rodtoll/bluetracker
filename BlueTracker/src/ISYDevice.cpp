@@ -33,7 +33,7 @@ int ISYDevice::Initialize(string isyAddress, string userName, string password)
 
 	if(_curlHandle == NULL)
 	{
-		cout << "Unable to initialize the easy library" << endl;
+		BOOST_LOG_TRIVIAL(error) << "Unable to initialize the easy library" << endl;
 		return -1;
 	}
 	else
@@ -68,7 +68,7 @@ int ISYDevice::SetVariable(int variableType, int variableId, int variableValue)
 	userCredentials += _password;
 	const char *userCredentialsCStr = userCredentials.c_str();
 
-	cout << "Going to use URL: " << urlToUse << endl;
+	BOOST_LOG_TRIVIAL(debug) << "Going to use URL: " << urlToUse << endl;
 	curl_easy_setopt(_curlHandle, CURLOPT_VERBOSE, 1L);
 	curl_easy_setopt(_curlHandle, CURLOPT_URL, urlToUseCStr );
 	curl_easy_setopt(_curlHandle, CURLOPT_WRITEFUNCTION, writeCallback);

@@ -39,22 +39,22 @@ void worker(int foo)
 	int res = adapter.Initialize(1);
 	if(res == 0)
 	{
-		cout << "Adapter Initialized" << endl;
+		BOOST_LOG_TRIVIAL(debug) << "Adapter Initialized" << endl;
 		res = adapter.StartScan(&HandleDeviceBroadcast);
 		if( res == 0)
 		{
-			cout << "Scan started!" << endl;
+			BOOST_LOG_TRIVIAL(debug) << "Scan started!" << endl;
 			boost::this_thread::sleep_for(boost::chrono::seconds(10));
 			adapter.StopScan();
 		}
 		else
 		{
-			cout << "Scan failed to start" << endl;
+			BOOST_LOG_TRIVIAL(error) << "Scan failed to start" << endl;
 		}
 	}
 	else
 	{
-		cout << "Adapter Failed to Initialize" << endl;
+		BOOST_LOG_TRIVIAL(error) << "Adapter Failed to Initialize" << endl;
 	}
 }
 
@@ -63,11 +63,11 @@ int main()
 	ISYDevice isyDevice;
 	if(isyDevice.Initialize("10.0.1.19", "admin", "ErgoFlat91") == 0)
 	{
-		cout << "ISY Initialize successful" << endl;
+		BOOST_LOG_TRIVIAL(debug) << "ISY Initialize successful" << endl;
 	}
 	else
 	{
-		cout << "ISY Initialize failed" << endl;
+		BOOST_LOG_TRIVIAL(error) << "ISY Initialize failed" << endl;
 		return -1;
 	}
 
@@ -77,14 +77,14 @@ int main()
 
 	if(result != 0)
 	{
-		cout << "Error loading device map" << endl;
+		BOOST_LOG_TRIVIAL(error) << "Error loading device map" << endl;
 		return -1;
 	}
 
-	cout << "Launching worker" << endl;
+	BOOST_LOG_TRIVIAL(debug) << "Launching worker" << endl;
 	boost::thread worker_thread(worker,3);
 
-	cout << "Worker Launched" << endl;
+	BOOST_LOG_TRIVIAL(debug) << "Worker Launched" << endl;
 
 	// Ensure upon startup we send the actual state
 	bool sentInitialState = false;
@@ -93,7 +93,7 @@ int main()
 	{
 		if(worker_thread.try_join_for(boost::chrono::seconds(0)))
 		{
-			cout << "Worker is shutting down..." << endl;
+			BOOST_LOG_TRIVIAL(debug) << "Worker is shutting down..." << endl;
 			break;
 		}
 
@@ -101,20 +101,20 @@ int main()
 
 		for(i = s_devicesList.begin(); i != s_devicesList.end(); i++)
 		{
-			cout << "Checking for state changes..." << endl;
+			BOOST_LOG_TRIVIAL(debug) << "Checking for state changes..." << endl;
 
 			BluetoothDevice *device = i->second;
 
-			cout << "Checking device: " << device->GetFriendlyName() << endl;
+			BOOST_LOG_TRIVIAL(debug) << "Checking device: " << device->GetFriendlyName() << endl;
 
 			if(device->TickAndCheckForStateChange() || !sentInitialState)
 			{
-				cout << "> State changed to" << device->IsDevicePresent() << endl;
+				BOOST_LOG_TRIVIAL(info) << "> State changed to" << device->IsDevicePresent() << endl;
 				isyDevice.SetVariable(2, device->GetISYVariableId(), (device->IsDevicePresent()) ? 1 : 0 );
 			}
 			else
 			{
-				cout << "> No state change. Current state:" << device->IsDevicePresent() << endl;
+				BOOST_LOG_TRIVIAL(debug) << "> No state change. Current state:" << device->IsDevicePresent() << endl;
 			}
 		}
 
@@ -124,5 +124,5 @@ int main()
 	}
 
 	worker_thread.join();
-	cout << "Worker joined" << endl;
+	BOOST_LOG_TRIVIAL(debug) << "Worker joined" << endl;
 }
