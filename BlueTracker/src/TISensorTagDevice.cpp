@@ -23,3 +23,26 @@ const char *TISensorTagDevice::GetDeviceTypeName()
 	return "TISENSORTAG";
 }
 
+bool TISensorTagDevice::TickAndCheckForStateChange()
+{
+	bool result = BluetoothDevice::TickAndCheckForStateChange();
+
+	posix_time::ptime currentTime = boost::posix_time::microsec_clock::universal_time();
+	posix_time::time_duration deltaFromLastUpdate = currentTime - _lastSensorCheck;
+	_lastSensorCheck = currentTime;
+
+	// Time to check the sensors!
+	if(deltaFromLastUpdate.total_seconds() > _timeBeforeSensorPollMs.total_seconds())
+	{
+		BOOST_LOG_TRIVIAL(debug) << "Poll time exceeded. Time to get sensor data" << endl;
+		RequestSensorUpdate();
+	}
+	return result;
+}
+
+void TISensorTagDevice::RequestSensorUpdate()
+{
+
+}
+
+
