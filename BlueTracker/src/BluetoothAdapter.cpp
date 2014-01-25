@@ -162,7 +162,10 @@ void BluetoothAdapter::ExecuteScan()
 		meta = (evt_le_meta_event *) ptr;
 
 		if (meta->subevent != 0x02)
-			goto done;
+		{
+			BOOST_LOG_TRIVIAL(debug) << "Got an unexpected event so looping again" << endl;
+			continue;
+		}
 
 		/* Ignoring multiple reports */
 		info = (le_advertising_info *) (meta->data + 1);

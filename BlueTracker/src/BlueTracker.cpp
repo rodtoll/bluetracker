@@ -61,16 +61,6 @@ void worker(int foo)
 
 int main()
 {
-	GattTool tool;
-	tool.Initialize();
-	tool.Connect("90:59:AF:0B:84:DE");
-	tool.WriteValue("0x29", "01");
-	string resultText;
-	tool.ReadValue("0x25", resultText);
-	cout << "Result: [" + resultText + "]" << endl;
-	tool.WriteValue("0x29", "00");
-	tool.Disconnect();
-
 	ISYDevice isyDevice;
 	if(isyDevice.Initialize("10.0.1.19", "admin", "ErgoFlat91") == 0)
 	{

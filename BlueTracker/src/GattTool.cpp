@@ -145,7 +145,7 @@ int GattTool::ReadValue(string handle, string& value)
 
 	if(result == 0)
 	{
-		int index = commandResult.find(valuePrefix);
+		unsigned int index = commandResult.find(valuePrefix);
 
 		if( index == string::npos )
 		{
@@ -162,7 +162,7 @@ int GattTool::ReadValue(string handle, string& value)
 		}
 
 		int startOfText = index + valuePrefix.length();
-		value = commandResult.substr(startOfText, endIndex-startOfText);
+		value = commandResult.substr(startOfText, endIndex-startOfText-1);
 	}
 
 	return result;

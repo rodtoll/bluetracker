@@ -54,7 +54,7 @@ int BluetoothLoadDeviceMap(string fileName, boost::container::map<string,Bluetoo
 			string("SensorTag-Pink"),
 			posix_time::seconds(3),
 			posix_time::seconds(60),
-			posix_time::hours(1),
+			posix_time::seconds(10),
 			BluetoothDevice::BDT_SensorTag,
 			26);
 
