@@ -10,6 +10,7 @@ CPP_SRCS += \
 ../src/BluetoothDeviceFactory.cpp \
 ../src/FitbitDevice.cpp \
 ../src/GattTool.cpp \
+../src/IBeaconDevice.cpp \
 ../src/ISYDevice.cpp \
 ../src/StickNFindDevice.cpp \
 ../src/TISensorTagDevice.cpp 
@@ -21,6 +22,7 @@ OBJS += \
 ./src/BluetoothDeviceFactory.o \
 ./src/FitbitDevice.o \
 ./src/GattTool.o \
+./src/IBeaconDevice.o \
 ./src/ISYDevice.o \
 ./src/StickNFindDevice.o \
 ./src/TISensorTagDevice.o 
@@ -32,6 +34,7 @@ CPP_DEPS += \
 ./src/BluetoothDeviceFactory.d \
 ./src/FitbitDevice.d \
 ./src/GattTool.d \
+./src/IBeaconDevice.d \
 ./src/ISYDevice.d \
 ./src/StickNFindDevice.d \
 ./src/TISensorTagDevice.d 

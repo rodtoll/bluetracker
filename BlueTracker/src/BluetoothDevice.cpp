@@ -10,6 +10,7 @@
 #include "StickNFindDevice.h"
 #include "FitbitDevice.h"
 #include "TISensorTagDevice.h"
+#include "IBeaconDevice.h"
 
 BluetoothDevice::BluetoothDevice(
 		):_lastRssi(0),_devicePresent(false), _deviceType(BDT_Undefined), _isyVariableId(0)
@@ -144,6 +145,12 @@ BluetoothDevice* BluetoothDevice::CreateDevice(
 	else if(deviceType == BluetoothDevice::BDT_SensorTag)
 	{
 		TISensorTagDevice* newDevice = new TISensorTagDevice();
+		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
+		return newDevice;
+	}
+	else if(deviceType == BluetoothDevice::BDT_IBeacon)
+	{
+		IBeaconDevice* newDevice = new IBeaconDevice();
 		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
 		return newDevice;
 	}

@@ -48,6 +48,18 @@ int BluetoothLoadDeviceMap(string fileName, boost::container::map<string,Bluetoo
 
 	deviceMap[deviceName] = newDevice;
 
+	deviceName = "00:07:80:71:E9:29";
+	newDevice = BluetoothDevice::CreateDevice(
+			deviceName,
+			string("Radius iBeacon"),
+			posix_time::seconds(3),
+			posix_time::seconds(60),
+			posix_time::hours(1),
+			BluetoothDevice::BDT_IBeacon,
+			26);
+
+	deviceMap[deviceName] = newDevice;
+
 	deviceName = "90:59:AF:0B:84:DE";
 	newDevice = BluetoothDevice::CreateDevice(
 			deviceName,
