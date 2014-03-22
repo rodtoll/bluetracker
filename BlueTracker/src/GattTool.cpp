@@ -46,7 +46,7 @@ int GattTool::Initialize()
 	const pstreams::pmode mode = pstreams::pstdout|pstreams::pstdin;
 
 	// Start the gatttool environment
-	_gattToolProcess.open("gatttool -i hci1 -I", mode);
+	_gattToolProcess.open("gatttool -i hci0 -I", mode);
 
 	// Wait for a prompt
 	return this->WaitForPrompt(commandResult);
@@ -80,7 +80,7 @@ int GattTool::Connect(string deviceAddress)
 	string result;
 	string connectCommand = "connect " + deviceAddress;
 
-	resultCode = this->ExecuteCommand(connectCommand,result);
+	resultCode = this->ExecuteCommand(connectCommand,result,true);
 
 	if(resultCode == 0)
 	{
@@ -89,7 +89,7 @@ int GattTool::Connect(string deviceAddress)
 			BOOST_LOG_TRIVIAL(error) << "Error connecting to specified device" << endl;
 			return -1;
 		}
-		else if(result.find("CON") != string::npos)
+		else if(result.find("Connection successful") != string::npos)
 		{
 			BOOST_LOG_TRIVIAL(debug) << "Connection succeeded" << endl;
 			this->SetToolState(Connected);

@@ -8,11 +8,10 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
+#define BOOST_LOG_TRIVIAL(x) cout
+
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time.hpp>
-#include <boost/log/core.hpp>
-#include <boost/log/trivial.hpp>
-#include <boost/log/expressions.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>

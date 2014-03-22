@@ -33,11 +33,11 @@ void HandleDeviceBroadcast(string deviceAddress, void *data, int dataLength)
 	}
 }
 
-void worker(int foo)
+void worker(int deviceIndex)
 {
-	cout << "Launching worker argument=" << foo <<endl;
+	cout << "Launching worker argument=" << deviceIndex <<endl;
 	BluetoothAdapter adapter;
-	int res = adapter.Initialize(1);
+	int res = adapter.Initialize(deviceIndex);
 	if(res == 0)
 	{
 		BOOST_LOG_TRIVIAL(debug) << "Adapter Initialized" << endl;
@@ -83,7 +83,7 @@ int main()
 	}
 
 	BOOST_LOG_TRIVIAL(debug) << "Launching worker" << endl;
-	boost::thread worker_thread(worker,3);
+	boost::thread worker_thread(worker,0);
 
 	BOOST_LOG_TRIVIAL(debug) << "Worker Launched" << endl;
 
