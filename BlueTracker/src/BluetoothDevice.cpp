@@ -109,7 +109,8 @@ int BluetoothDevice::Initialize(string address, string friendlyName,
 		posix_time::time_duration timeBeforeMissingMs,
 		posix_time::time_duration timeBeforeSensorPollMs,
 		BluetoothDevice::DeviceType deviceType,
-		int isyVariableId)
+		int isyVariableId,
+		int bleAdapterIndex)
 {
 	_deviceType = deviceType;
 	_updateFrequencyMs = updateFrequencyMs;
@@ -118,6 +119,7 @@ int BluetoothDevice::Initialize(string address, string friendlyName,
 	_deviceAddress = address;
 	_friendlyName = friendlyName;
 	_isyVariableId = isyVariableId;
+	_bleAdapterIndex = bleAdapterIndex;
 	return 0;
 }
 
@@ -128,30 +130,31 @@ BluetoothDevice* BluetoothDevice::CreateDevice(
 		posix_time::time_duration timeBeforeMissingMs,
 		posix_time::time_duration timeBeforeSensorPollMs,
 		BluetoothDevice::DeviceType deviceType,
-		int isyVariableId)
+		int isyVariableId,
+		int bleAdapterIndex)
 {
 	if(deviceType == BluetoothDevice::BDT_SticknFindTag)
 	{
 		StickNFindDevice* newDevice = new StickNFindDevice();
-		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
+		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId, bleAdapterIndex);
 		return newDevice;
 	}
 	else if(deviceType == BluetoothDevice::BDT_FitBit)
 	{
 		FitbitDevice* newDevice = new FitbitDevice();
-		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
+		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId, bleAdapterIndex);
 		return newDevice;
 	}
 	else if(deviceType == BluetoothDevice::BDT_SensorTag)
 	{
-		TISensorTagDevice* newDevice = new TISensorTagDevice();
-		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
+		TISensorTagDevice* newDevice = new TISensorTagDevice(bleAdapterIndex);
+		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId, bleAdapterIndex);
 		return newDevice;
 	}
 	else if(deviceType == BluetoothDevice::BDT_IBeacon)
 	{
 		IBeaconDevice* newDevice = new IBeaconDevice();
-		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId);
+		newDevice->Initialize(address, friendlyName, updateFrequencyMs, timeBeforeMissingMs, timeBeforeSensorPollMs, deviceType, isyVariableId, bleAdapterIndex);
 		return newDevice;
 	}
 	return NULL;

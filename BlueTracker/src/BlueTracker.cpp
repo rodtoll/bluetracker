@@ -73,8 +73,9 @@ int main()
 	}
 
 	int result;
+	int deviceId = 0;
 
-	result = BluetoothLoadDeviceMap("devices.cfg",s_devicesList);
+	result = BluetoothLoadDeviceMap("/home/rodtoll/git/bluetracker/BlueTracker/Debug/devices.cfg",s_devicesList,deviceId);
 
 	if(result != 0)
 	{
@@ -83,7 +84,7 @@ int main()
 	}
 
 	BOOST_LOG_TRIVIAL(debug) << "Launching worker" << endl;
-	boost::thread worker_thread(worker,0);
+	boost::thread worker_thread(worker,deviceId);
 
 	BOOST_LOG_TRIVIAL(debug) << "Worker Launched" << endl;
 

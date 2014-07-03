@@ -32,7 +32,7 @@ int GattTool::WaitForPrompt(string &resultText)
 	return 0;
 }
 
-int GattTool::Initialize()
+int GattTool::Initialize(int bleAdapterIndex)
 {
 	if(_toolState != UnInitialized)
 	{
@@ -45,8 +45,15 @@ int GattTool::Initialize()
 	// Setup so we are input/output
 	const pstreams::pmode mode = pstreams::pstdout|pstreams::pstdin;
 
-	// Start the gatttool environment
-	_gattToolProcess.open("gatttool -i hci0 -I", mode);
+	if(bleAdapterIndex == 0) {
+		// Start the gatttool environment
+		_gattToolProcess.open("gatttool -i hci0 -I", mode);
+	} else if(bleAdapterIndex == 1) {
+		// Start the gatttool environment
+		_gattToolProcess.open("gatttool -i hci1 -I", mode);
+	} else {
+		return -1;
+	}
 
 	// Wait for a prompt
 	return this->WaitForPrompt(commandResult);
@@ -89,7 +96,8 @@ int GattTool::Connect(string deviceAddress)
 			BOOST_LOG_TRIVIAL(error) << "Error connecting to specified device" << endl;
 			return -1;
 		}
-		else if(result.find("Connection successful") != string::npos)
+		else if(result.find("Connection successful") != string::npos ||
+                        result.find("CON") != string::npos )
 		{
 			BOOST_LOG_TRIVIAL(debug) << "Connection succeeded" << endl;
 			this->SetToolState(Connected);

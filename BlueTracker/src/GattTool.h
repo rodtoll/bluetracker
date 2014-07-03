@@ -24,7 +24,7 @@ public:
 	GattTool();
 	virtual ~GattTool();
 
-	int Initialize();
+	int Initialize(int bleAdapterIndex);
 	int Connect(string deviceAddress);
 	int Disconnect();
 	int WriteValue(string handle, string value);
@@ -39,6 +39,7 @@ protected:
 	pstream _gattToolProcess;
 	ToolState _toolState;
 	string _deviceAddress;
+	int _bleAdapterIndex;
 };
 
 #endif /* GATTTOOL_H_ */

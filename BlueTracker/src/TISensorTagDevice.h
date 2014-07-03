@@ -13,7 +13,7 @@
 
 class TISensorTagDevice: public BluetoothDevice {
 public:
-	TISensorTagDevice();
+	TISensorTagDevice(int bleAdapterIndex);
 	virtual ~TISensorTagDevice();
 
 	virtual const char *GetDeviceTypeName();
@@ -22,6 +22,7 @@ public:
 	virtual void UpdateDeviceDetected(int rssi);
 
 protected:
+
 	void RequestSensorUpdate();
 
 	posix_time::ptime _lastSensorCheck;

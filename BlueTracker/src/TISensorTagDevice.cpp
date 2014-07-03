@@ -9,9 +9,8 @@
 #include "BluetoothDevice.h"
 #include "TISensorTagDevice.h"
 
-TISensorTagDevice::TISensorTagDevice() {
-	// TODO Auto-generated constructor stub
-	this->_sensorApp.Initialize();
+TISensorTagDevice::TISensorTagDevice(int bleAdapterIndex) {
+	this->_sensorApp.Initialize(bleAdapterIndex);
 }
 
 TISensorTagDevice::~TISensorTagDevice() {

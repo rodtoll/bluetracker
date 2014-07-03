@@ -50,7 +50,7 @@ public:
 			posix_time::time_duration timeBeforeMissingMs,
 			posix_time::time_duration timeBeforeSensorPollMs,
 			BluetoothDevice::DeviceType deviceType,
-			int isyVariableId);
+			int isyVariableId, int bleAdapterIndex);
 
 protected:
 	virtual int Initialize(string address, string friendlyName,
@@ -58,10 +58,11 @@ protected:
 			posix_time::time_duration timeBeforeMissingMs,
 			posix_time::time_duration timeBeforeSensorPollMs,
 			BluetoothDevice::DeviceType deviceType,
-			int isyVariableId);
+			int isyVariableId, int bleAdapterIndex);
 
 	posix_time::ptime _lastSeenTime;
 	int _lastRssi;
+	int _bleAdapterIndex;
 	bool _devicePresent;
 	posix_time::time_duration _updateFrequencyMs;
 	posix_time::time_duration _timeBeforeMissingMs;
