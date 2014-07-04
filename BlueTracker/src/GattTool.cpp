@@ -87,7 +87,7 @@ int GattTool::Connect(string deviceAddress)
 	string result;
 	string connectCommand = "connect " + deviceAddress;
 
-	resultCode = this->ExecuteCommand(connectCommand,result,true);
+	resultCode = this->ExecuteCommand(connectCommand,result,false);
 
 	if(resultCode == 0)
 	{
