@@ -72,10 +72,13 @@ int main()
 		return -1;
 	}
 
+	boost::filesystem::path full_path( boost::filesystem::current_path() );
+	std::cout << "Current path is : " << full_path << std::endl;
+
 	int result;
 	int deviceId = 0;
 
-	result = BluetoothLoadDeviceMap("/home/rodtoll/git/bluetracker/BlueTracker/Debug/devices.cfg",s_devicesList,deviceId);
+	result = BluetoothLoadDeviceMap("./devices.cfg",s_devicesList,deviceId);
 
 	if(result != 0)
 	{
