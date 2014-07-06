@@ -127,7 +127,7 @@ int main()
 
 		boost::this_thread::sleep_for(boost::chrono::seconds(30));
 	}
-
+	BOOST_LOG_TRIVIAL(debug) << "Exiting worker - Waiting for join" << endl;
 	worker_thread.join();
 	BOOST_LOG_TRIVIAL(debug) << "Worker joined" << endl;
 }

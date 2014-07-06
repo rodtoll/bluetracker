@@ -152,8 +152,14 @@ void BluetoothAdapter::ExecuteScan()
 			}
 
 			if (errno == EAGAIN || errno == EINTR)
+			{
 				continue;
-			goto done;
+			}
+			else
+			{
+				BOOST_LOG_TRIVIAL(debug) << "#### Scan loop error: " << errno << endl;
+				boost::this_thread::sleep_for(boost::chrono::seconds(3));
+			}
 		}
 
 		ptr = buf + (1 + HCI_EVENT_HDR_SIZE);
@@ -178,6 +184,8 @@ done:
 	BOOST_LOG_TRIVIAL(debug) << "exiting scan loop" << endl;
 
 	setsockopt(_deviceId, SOL_HCI, HCI_FILTER, &of, sizeof(of));
+
+	BOOST_LOG_TRIVIAL(debug) << "setsockopt completed" << endl;
 
 	if (len < 0)
 		return;
