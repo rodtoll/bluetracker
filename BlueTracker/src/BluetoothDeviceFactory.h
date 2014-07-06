@@ -15,6 +15,6 @@
 
 using namespace boost;
 
-int BluetoothLoadDeviceMap(string fileName, boost::container::map<string,BluetoothDevice*> &deviceMap, int &deviceId);
+int BluetoothLoadDeviceMap(string fileName, boost::container::map<string,BluetoothDevice*> &deviceMap, int &deviceId, string &adapterName);
 
 #endif /* BLUETOOTHDEVICEFACTORY_H_ */

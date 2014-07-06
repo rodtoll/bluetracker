@@ -13,7 +13,7 @@
 #include "IBeaconDevice.h"
 
 BluetoothDevice::BluetoothDevice(
-		):_lastRssi(0),_devicePresent(false), _deviceType(BDT_Undefined), _isyVariableId(0)
+		):_lastRssi(0), _bleAdapterIndex(0), _devicePresent(false), _deviceType(BDT_Undefined),  _isyVariableId(0)
 {
 }
 

@@ -64,10 +64,11 @@ protected:
 	int _lastRssi;
 	int _bleAdapterIndex;
 	bool _devicePresent;
+	DeviceType _deviceType;
+
 	posix_time::time_duration _updateFrequencyMs;
 	posix_time::time_duration _timeBeforeMissingMs;
 	posix_time::time_duration _timeBeforeSensorPollMs;
-	DeviceType _deviceType;
 	string _friendlyName;
 	string _deviceAddress;
 	int _isyVariableId;

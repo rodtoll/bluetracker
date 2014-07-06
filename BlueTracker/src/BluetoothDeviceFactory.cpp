@@ -12,7 +12,7 @@
 
 typedef vector< string > split_vector_type;
 
-int BluetoothLoadDeviceMap(string fileName, boost::container::map<string,BluetoothDevice* >& deviceMap, int &deviceId)
+int BluetoothLoadDeviceMap(string fileName, boost::container::map<string,BluetoothDevice* >& deviceMap, int &deviceId, string &beaconName)
 {
 	string line;
 	ifstream deviceFile(fileName.c_str());
@@ -23,6 +23,12 @@ int BluetoothLoadDeviceMap(string fileName, boost::container::map<string,Bluetoo
 	// Read in device id
 	getline(deviceFile,line);
 	deviceId = atoi(line.c_str());
+
+	// Read in device name header
+	getline(deviceFile,line);
+
+	// Read device name
+	getline(deviceFile,beaconName);
 
 	// Skip header comments
 	getline(deviceFile,line);

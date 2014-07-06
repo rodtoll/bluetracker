@@ -8,7 +8,7 @@
 #include "common.h"
 #include "GattTool.h"
 
-GattTool::GattTool(): _toolState(UnInitialized)
+GattTool::GattTool(): _toolState(UnInitialized), _bleAdapterIndex(0)
 {
 	// TODO Auto-generated constructor stub
 

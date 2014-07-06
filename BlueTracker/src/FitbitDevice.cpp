@@ -19,5 +19,5 @@ FitbitDevice::~FitbitDevice() {
 
 const char *FitbitDevice::GetDeviceTypeName()
 {
-	return "FITBIT";
+	return "FITBITFORCE";
 }

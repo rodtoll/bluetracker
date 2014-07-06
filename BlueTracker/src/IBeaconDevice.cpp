@@ -22,7 +22,7 @@ IBeaconDevice::~IBeaconDevice()
 
 const char *IBeaconDevice::GetDeviceTypeName()
 {
-	return "IBEACON";
+	return "IBEACONGEN1";
 }
 
 

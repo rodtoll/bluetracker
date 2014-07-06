@@ -22,7 +22,7 @@ StickNFindDevice::~StickNFindDevice()
 
 const char *StickNFindDevice::GetDeviceTypeName()
 {
-	return "STICKNFIND";
+	return "STICKNFIND1";
 }
 
 

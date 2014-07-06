@@ -44,9 +44,9 @@ int ISYDevice::Initialize(string isyAddress, string userName, string password)
 
 size_t writeCallback(char* buf, size_t size, size_t nmemb, void* up)
 {
-    for (int c = 0; c<size*nmemb; c++)
+    for (size_t c = 0; c<size*nmemb; c++)
     {
-        cout << buf[c];
+        //cout << buf[c];
     }
     return size*nmemb; //tell curl how many bytes we handled
 }
@@ -68,8 +68,8 @@ int ISYDevice::SetVariable(int variableType, int variableId, int variableValue)
 	userCredentials += _password;
 	const char *userCredentialsCStr = userCredentials.c_str();
 
-	BOOST_LOG_TRIVIAL(debug) << "Going to use URL: " << urlToUse << endl;
-	curl_easy_setopt(_curlHandle, CURLOPT_VERBOSE, 1L);
+	//BOOST_LOG_TRIVIAL(debug) << "Going to use URL: " << urlToUse << endl;
+	//curl_easy_setopt(_curlHandle, CURLOPT_VERBOSE, 1L);
 	curl_easy_setopt(_curlHandle, CURLOPT_URL, urlToUseCStr );
 	curl_easy_setopt(_curlHandle, CURLOPT_WRITEFUNCTION, writeCallback);
 	curl_easy_setopt(_curlHandle, CURLOPT_USERPWD, userCredentialsCStr );

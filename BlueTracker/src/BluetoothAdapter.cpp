@@ -31,13 +31,15 @@ BluetoothAdapter::AdapterState BluetoothAdapter::GetState()
 	return _adapterState;
 }
 
-int BluetoothAdapter::Initialize(int deviceId)
+int BluetoothAdapter::Initialize(int deviceId, string adapterName)
 {
 	if(this->GetState() != BlueUnInitialized)
 	{
 		BOOST_LOG_TRIVIAL(error) << "Device is already open. Cannot initialize." << endl;
 		return -2;
 	}
+
+	this->_adapterName = adapterName;
 
 	int result = hci_open_dev(deviceId);
 
@@ -177,7 +179,7 @@ void BluetoothAdapter::ExecuteScan()
 		info = (le_advertising_info *) (meta->data + 1);
 		ba2str(&info->bdaddr, addr);
 
-		(*_broadcastHandler)(addr,ptr,len);
+		(*_broadcastHandler)(_adapterName, addr,ptr,len);
 	}
 
 done:

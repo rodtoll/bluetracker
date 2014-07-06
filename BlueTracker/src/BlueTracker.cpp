@@ -14,8 +14,9 @@
 #include "GattTool.h"
 
 boost::container::map<string,BluetoothDevice*> s_devicesList;
+static string s_adapterName;
 
-void HandleDeviceBroadcast(string deviceAddress, void *data, int dataLength)
+void HandleDeviceBroadcast(string adapterName, string deviceAddress, void *data, int dataLength)
 {
 	int8_t* rssi = (int8_t*) data;
 	rssi += dataLength-1;
@@ -23,13 +24,13 @@ void HandleDeviceBroadcast(string deviceAddress, void *data, int dataLength)
 
 	if(s_devicesList.find(deviceAddress) == s_devicesList.end())
 	{
-		cout << deviceAddress << " - rssiAsInt - " << rssiAsInt << " -- Unknown device" << endl;
+		cout << adapterName << ": [" << deviceAddress << "] [" << rssiAsInt << "] -- [UNKNOWN] Unknown" << endl;
 	}
 	else
 	{
 		BluetoothDevice* device = s_devicesList[deviceAddress];
 		device->UpdateDeviceDetected((int)(*rssi));
-		cout << deviceAddress << " - rssiAsInt - " << rssiAsInt << " -- " << device->GetFriendlyName() << " -- " << device->GetDeviceAddress() << " -- " << device->GetDeviceTypeName() << endl;
+		cout << adapterName << ": [" << deviceAddress << "] [" << rssiAsInt << "] -- [" << device->GetDeviceTypeName() << "] "<< device->GetFriendlyName() << endl;
 	}
 }
 
@@ -37,7 +38,7 @@ void worker(int deviceIndex)
 {
 	cout << "Launching worker argument=" << deviceIndex <<endl;
 	BluetoothAdapter adapter;
-	int res = adapter.Initialize(deviceIndex);
+	int res = adapter.Initialize(deviceIndex, s_adapterName);
 	if(res == 0)
 	{
 		BOOST_LOG_TRIVIAL(debug) << "Adapter Initialized" << endl;
@@ -78,7 +79,7 @@ int main()
 	int result;
 	int deviceId = 0;
 
-	result = BluetoothLoadDeviceMap("./devices.cfg",s_devicesList,deviceId);
+	result = BluetoothLoadDeviceMap("./devices.cfg",s_devicesList,deviceId,s_adapterName);
 
 	if(result != 0)
 	{
@@ -104,22 +105,22 @@ int main()
 
 		boost::container::map<string,BluetoothDevice*>::iterator i;
 
+		BOOST_LOG_TRIVIAL(debug) << s_adapterName << ": Checking for state changes..." << endl;
+
 		for(i = s_devicesList.begin(); i != s_devicesList.end(); i++)
 		{
-			BOOST_LOG_TRIVIAL(debug) << "Checking for state changes..." << endl;
-
 			BluetoothDevice *device = i->second;
 
-			BOOST_LOG_TRIVIAL(debug) << "Checking device: " << device->GetFriendlyName() << endl;
+			//BOOST_LOG_TRIVIAL(debug) << "Checking device: " << device->GetFriendlyName() << endl;
 
 			if(device->TickAndCheckForStateChange() || !sentInitialState)
 			{
-				BOOST_LOG_TRIVIAL(info) << "> State changed to" << device->IsDevicePresent() << endl;
+				BOOST_LOG_TRIVIAL(info) << s_adapterName << ": [" << device->GetFriendlyName() << "] > State changed to" << device->IsDevicePresent() << endl;
 				isyDevice.SetVariable(2, device->GetISYVariableId(), (device->IsDevicePresent()) ? 1 : 0 );
 			}
 			else
 			{
-				BOOST_LOG_TRIVIAL(debug) << "> No state change. Current state:" << device->IsDevicePresent() << endl;
+				//BOOST_LOG_TRIVIAL(debug) << "> No state change. Current state:" << device->IsDevicePresent() << endl;
 			}
 		}
 

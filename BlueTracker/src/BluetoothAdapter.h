@@ -8,14 +8,14 @@
 #ifndef BLUETOOTHADAPTER_H_
 #define BLUETOOTHADAPTER_H_
 
-typedef void HandleDeviceBroadcastMessage(string deviceAddress, void *data, int dataLength);
+typedef void HandleDeviceBroadcastMessage(string adapterName, string deviceAddress, void *data, int dataLength);
 
 class BluetoothAdapter {
 public:
 	BluetoothAdapter();
 	virtual ~BluetoothAdapter();
 
-	int Initialize(int deviceId);
+	int Initialize(int deviceId, string adapterName);
 	int StartScan(HandleDeviceBroadcastMessage* broadcastHandler);
 	int StopScan();
 	void Cleanup();
@@ -25,6 +25,7 @@ public:
     enum AdapterState { BlueUnInitialized, BlueInitialized, BlueScanning };
 
 	AdapterState GetState();
+	string GetName() { return _adapterName; };
 
 protected:
 
@@ -35,6 +36,7 @@ protected:
 	int _deviceId;
 	AdapterState _adapterState;
 	HandleDeviceBroadcastMessage* _broadcastHandler;
+	string _adapterName;
 };
 
 #endif /* BLUETOOTHADAPTER_H_ */
